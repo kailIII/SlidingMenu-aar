@@ -1,17 +1,17 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.7.+'
+        classpath 'com.android.tools.build:gradle:0.13.2'
     }
 }
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 apply plugin: 'maven'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.0.0'
+    compileSdkVersion 21
+    buildToolsVersion '21.0.2'
 
     sourceSets {
         main {
@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:support-v4:21.0.0'
 }
 
 group = 'com.jeremyfeinstein.slidingmenu'
@@ -48,7 +48,7 @@ afterEvaluate { project ->
     }
 
     task androidJavadocs(type: Javadoc) {
-        source = android.sourceSets.main.allJava
+        source = android.sourceSets.main.java.getSrcDirs()
     }
     task androidJavadocsJar(type: Jar) {
         classifier = 'javadoc'
@@ -56,15 +56,11 @@ afterEvaluate { project ->
     }
     task androidSourcesJar(type: Jar) {
         classifier = 'sources'
-        from android.sourceSets.main.allSource
+        from android.sourceSets.main.java.getSrcDirs()
     }
 
     artifacts {
         archives androidSourcesJar
         archives androidJavadocsJar
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.9'
 }
